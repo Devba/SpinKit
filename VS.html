@@ -1,0 +1,289 @@
+<html>
+<head>
+<title>Three Bounce</title>
+  </head>
+<style>
+     
+#jeader{width:95%;height:20px;padding:20px;padding-top:10px;border:1px solid #aaaaaa;background-color:RGB(1,13,54);color:white;font-family:"Times New Roman",Times,serif;font-size:30px}
+#div1{width:375px;height:15px;padding:50px;border:1px solid #aaaaaa;position:relative;top:50px;right:-50px;background-color:RGB(221,87,124)}
+#div2{width:350px;height:15px;padding:10px;border:1px solid #aaaaaa;}
+.div3{width:350px;height:15px;padding:10px;border:1px solid #aaaaaa;background-color:#333333}
+.Edatos{width:450px;height:250px;padding:15px;border:1px solid #aaaaaa;background-color:RGB(1,13,54);position:relative;right:-50px;font-size:20px;color:white}
+.inpbox{float:right;width:160px;height:18px}
+.tablas{width:850px;height:600px;padding:10px;border:1px solid #aaaaaa;width:765px;
+height:453px;padding:10px;border:1px solid #aaaaaa;background-color:RGB(1,13,54);position:relative;
+top:-285px;
+right:-640px;
+font-size:20px;color:white;font-family:"Courier New",Times,serif;    }
+.inpnumbox{float:right;width:80px;height:18px}
+.explorar{width:400px}
+.verventas{height:26px;
+width:132px;
+padding-top:2px;position:relative;top: -2px;
+        left: 598px;
+    }
+     
+.spinner {   margin: 100px auto 0; width: 224px; text-align: center; height: 0px; }
+.spinner > div {width: 67px;height: 18px;background-color: #333;border-radius: 100%; display: inline-block;
+      -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+      animation: bouncedelay 1.4s infinite ease-in-out;
+      /* Prevent first frame from flickering when animation starts */
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+    }
+
+    .spinner .bounce1 {  -webkit-animation-delay: -0.32s;  animation-delay: -0.32s; }
+    .spinner .bounce2 {-webkit-animation-delay: -0.16s;animation-delay: -0.16s;}
+    @-webkit-keyframes bouncedelay {0%, 80%, 100% { -webkit-transform: scale(0.0) }40% { -webkit-transform: scale(1.0) }}
+    @keyframes bouncedelay {0%, 80%, 100% {transform: scale(0.0);-webkit-transform: scale(0.0);} 40% {transform: scale(1.0);-webkit-transform: scale(1.0);}}
+    </style>
+
+    <div id="jeader" align="center"> Input de Ventas Semanales - ALDI PINTO </div>
+    <div id="bolitas" class="spinner"> <div id="b1" class="bounce1" ></div><div class="bounce2" align="center"></div><div class="bounce3"></div></div>
+     
+
+
+
+  <body>
+
+ <div id="EntradaDatos" class="Edatos"  >
+      <form >
+        Tienda <select class="inpbox" id="tienda"></select><br>
+        Semana <select class="inpbox" id="ssemana"></select><BR>
+        Venta <input id="venta" class="inpnumbox"><br>
+        Merma Frutas Verduras<input id="Merma_FV" class="inpnumbox"><br>
+        Merma Carnes<input id="Merma_C" class="inpnumbox"><br>
+        Merma Pan<input id="Merma_P" class="inpnumbox"><br>
+        Merma Surtido<input id="Merma_S" class="inpnumbox"  style="float: right;" ><br>
+    </form>
+    <br>
+    <input id="Enviar" type="submit" class="inpbox" style="height:22px" value="Añadir Fila" onclick=GuardarenTabla()><br>
+</div>
+
+
+<div id="tabla" class="tablas" 
+          style="font-family: Andalus; font-size: small; color: #FFFFFF; padding-right: 100px;">
+<table id="mitabla" border=1    style="font-family: Andalus; font-size: medium; color: #FFFFFF">
+<tr> <td width=150> Tienda </td> <td> Mes </td><td> Venta </td> 
+<td> Merma FV </td><td> Merma Carnes </td><td> Merma Pan </td><td>Merma Surt.</td>
+</tr>
+</table>
+<br>
+<input id="Submit1" type="submit" value="Generar Fichero" onclick="ResultText()" style="float:right; height: 30px;"><br><br>
+<input id="Ver fichero" type="submit" value="Ver Resultado" onclick=verfichero()  style="float: right; height: 30px;"></div >
+<br>
+</body>
+
+  <script>
+      var interval;
+      var stresultHTML;
+     muestrame();
+
+      function escondeme() {
+          document.getElementById("bolitas").style.visibility = "hidden";
+          document.getElementById("EntradaDatos").style.visibility = "";
+          document.getElementById("tabla").style.visibility = "";
+          cargardesplegables();
+          clearInterval(interval);
+      }
+      function muestrame() {
+
+          document.getElementById("bolitas").style.visibility = "";
+          document.getElementById("tabla").style.visibility = "hidden";
+          document.getElementById("EntradaDatos").style.visibility = "hidden";
+          interval=setInterval('escondeme()', 1500);
+          
+
+      }
+
+      function GuardarenTabla() {
+          muestrame();
+         
+          var vabien = true;
+          var venta = document.getElementById("venta").value;
+          var mfv = document.getElementById("Merma_FV").value;
+          var mc = document.getElementById("Merma_C").value;
+          var mp = document.getElementById("Merma_P").value;
+          var ms = document.getElementById("Merma_S").value;
+          
+
+          if (vabien) {
+              var rowcount = document.getElementById("mitabla").rows.length;
+        
+              // Insert a row in the table at row index 0
+              var newRow = document.getElementById("mitabla").insertRow(-1);
+
+              // Insert a cell in the row at index 0
+              var newCell = newRow.insertCell(0); var newText = document.createTextNode(document.getElementById("tienda")[document.getElementById("tienda").value - 1].text); newCell.appendChild(newText);
+              var newCell = newRow.insertCell(1); var newText = document.createTextNode(document.getElementById("ssemana")[document.getElementById("ssemana").value - 1].text); newCell.appendChild(newText);
+              var newCell = newRow.insertCell(2); var newText = document.createTextNode(document.getElementById("venta").value); newCell.appendChild(newText);
+              var newCell = newRow.insertCell(3); var newText = document.createTextNode(document.getElementById("Merma_FV").value); newCell.appendChild(newText);
+              var newCell = newRow.insertCell(4); var newText = document.createTextNode(document.getElementById("Merma_C").value); newCell.appendChild(newText);
+              var newCell = newRow.insertCell(5); var newText = document.createTextNode(document.getElementById("Merma_P").value); newCell.appendChild(newText);
+              var newCell = newRow.insertCell(6); var newText = document.createTextNode(document.getElementById("Merma_S").value); newCell.appendChild(newText);
+         
+
+          }
+
+      }
+
+
+      function cargardesplegables() {
+          var cont;
+          var dpbx = document.getElementById("tienda");
+          var ssemana = document.getElementById("ssemana");
+
+
+          for (cont = 1; cont < 130; cont = cont + 1) { dpbx.options[dpbx.options.length] = new Option(Rtiendas[cont], cont); }
+          for (cont = 1; cont < 54; cont = cont + 1) { ssemana.options[ssemana.options.length] = new Option(cont, cont); }
+          document.getElementById("venta").value = 0;
+          document.getElementById("Merma_FV").value = 0;
+          document.getElementById("Merma_C").value = 0;
+          document.getElementById("Merma_P").value = 0;
+          document.getElementById("Merma_S").value = 0;
+    //     document.getElementById("opfich").style.visibility = "hidden";
+       
+      }
+
+
+      function saveTextAsFile(vtext) {
+          var textToWrite = vtext;
+          var textFileAsBlob = new Blob([textToWrite], { type: 'text/plain' });
+          var fileNameToSaveAs = "Results.txt";
+
+          if (navigator.appName == "Microsoft Internet Explorer") {
+             alert("Estás usando Internet Explorer blabla blabla un texto cualquiera")
+          }
+
+
+          var downloadLink = document.createElement("a");
+          downloadLink.download = fileNameToSaveAs;
+          downloadLink.innerHTML = "Download File";
+          if (window.webkitURL != null) {
+              // Chrome allows the link to be clicked
+              // without actually adding it to the DOM.
+              downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+          }
+          else {
+              // Firefox requires the link to be added to the DOM
+              // before it can be clicked.
+              downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            //  downloadLink.onclick = destroyClickedElement;
+              downloadLink.style.display = "none";
+              document.body.appendChild(downloadLink);
+          }
+
+          downloadLink.click();
+      }
+
+
+
+
+
+      function ResultText() {
+
+          var cont;
+          var contcelda;
+          var vtabla = document.getElementById("mitabla")
+          stresul = "Tienda;Semana;Ventas;Mermas1;Mermas2;Mermas3;Mermas4;\r\n";
+          stresultHTML = stresul + "<BR>";
+     
+          for (cont = 1; cont < vtabla.rows.length; cont++) {
+                 for (contcelda = 0; contcelda <= 6; contcelda++) {
+                  stresul += vtabla.rows[cont].cells[contcelda].innerHTML + ";";
+                  stresultHTML += vtabla.rows[cont].cells[contcelda].innerHTML + ";";
+              }
+
+              stresultHTML += "<br>";stresul += "\r\n";
+          }
+
+          if (navigator.appName == "Microsoft Internet Explorer") {
+              alert("Estás usando Internet Explorer,haga click en 'Ver fichero en Web' para ver el resultado")
+          }else
+        {saveTextAsFile(stresul);}
+    }
+
+
+function verfichero() { var w = window.open(""); w.document.write(stresultHTML); }
+
+var arrTiendas = new Array(
+"Alcalá de Henares",
+"Alcorcón",
+"Alovera",
+"Alpedrete",
+"Ansoaín",
+"Arganda del Rey",
+"Arnedo",
+"Arroyo de la Encomienda",
+"Arroyomolinos",
+"Ávila",
+"Barakaldo",
+"Béjar",
+"Benavente",
+"Berriozar",
+"Brunete",
+"Calahorra",
+"Calatayud",
+"Cendea",
+"Ciudad Real",
+"Cuenca I",
+"Cuenca II",
+"El Casar",
+"Estella",
+"Fuenlabrada",
+"Getafe",
+"Griñón",
+"Guadalajara",
+"Huarte",
+"Illescas",
+"La Roda",
+"Landaben",
+"Laredo",
+"Las Mercedes",
+"Leganés",
+"León I",
+"León II",
+"Manzanares",
+"Medina del Campo",
+"Mejorada del Campo",
+"Miranda de Ebro",
+"Navalcarnero",
+"Navalmoral de la Mata",
+"Padre Xifré",
+"Palencia",
+"Parla",
+"Pelícano",
+"Pinto",
+"Plasencia",
+"Puertollano",
+"Rivas Vaciamadrid",
+"Salamanca",
+"Sánchez Pacheco",
+"Segovia",
+"Talavera de la Reina",
+"Toledo",
+"Tomelloso",
+"Toro",
+"Torrejón de Ardoz",
+"Torrelavega",
+"Tudela",
+"Utebo",
+"Valdemoro",
+"Valdepeñas",
+"Valladolid I",
+"Valladolid III",
+"Viana",
+"Villacañas",
+"Villarrobledo",
+"Villaverde",
+"Vitoria I",
+"Vitoria II",
+"Zamora I",
+"Zamora II",
+"Zaragoza")
+    
+    
+      var Rtiendas = new Array(2, 3, 4, 6, 11, 12, 13, 18, 21, 22, 29, 33, 38, 48, 51, 58, 61, 62, 66, 67, 68, 73, 80, 86, 91, 92, 95, 98, 99, 100, 101, 107, 109, 110, 112, 113, 114, 115, 117, 118, 121, 124, 126, 129, 138, 142, 149, 152, 153, 160, 161, 165, 167, 168, 170, 171, 178, 179, 180, 181, 182, 184, 188, 189, 193, 194, 200, 201, 202, 208, 209, 212, 213, 215);
+
+  </script>
+</html>
